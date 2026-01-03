@@ -1,8 +1,7 @@
 #! /usr/bin/env python3
+import sys
 from pathlib import Path
 from stats import get_num_words, char_frequency, sort_dictionary
-
-BOOK_ROOT = Path("books")
 
 def get_book_text(filepath: Path) -> str:
     with open(filepath) as f:
@@ -10,12 +9,12 @@ def get_book_text(filepath: Path) -> str:
     return file_contents
 
 def print_report(book):
-    text = get_book_text(BOOK_ROOT / book)
+    text = get_book_text(book)
     num_words = get_num_words(text)
     freqs = char_frequency(text)
     char_count = sort_dictionary(freqs)
     print("============ BOOKBOT ============")
-    print(f"Analyzing book found at {BOOK_ROOT / book}")
+    print(f"Analyzing book found at {book}")
     print("----------- Word Count ----------")
     print(f"Found {num_words} total words")
     print("--------- Character Count -------")
@@ -28,7 +27,11 @@ def print_report(book):
 
 
 def main():
-    book = "frankenstein.txt"
+    if len(sys.argv) != 2:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
+    book = Path(sys.argv[1])
+    # book = "frankenstein.txt"
     # text = get_book_text(BOOK_ROOT / book)
     # num_words = get_num_words(text)
     # print(f"Found {num_words} total words")
